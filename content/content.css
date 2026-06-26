@@ -67,6 +67,9 @@
 /* ── Toolbar ────────────────────────────────────────────────────────────── */
 
 .ao3ce-wrapper trix-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   border: 1px solid var(--ao3ce-border);
   border-radius: 3px 3px 0 0;
   border-bottom: 1px solid var(--ao3ce-border-sub);
@@ -74,7 +77,9 @@
   background: var(--ao3ce-bg-chrome);
 }
 
-.ao3ce-wrapper trix-toolbar [data-trix-action="attachFiles"] {
+.ao3ce-wrapper trix-toolbar [data-trix-action="attachFiles"],
+.ao3ce-wrapper trix-toolbar [data-trix-action="decreaseNestingLevel"],
+.ao3ce-wrapper trix-toolbar [data-trix-action="increaseNestingLevel"] {
   display: none;
 }
 
@@ -228,9 +233,12 @@ textarea.ao3ce-plain-textarea.ao3ce-dark {
   padding-left: 0.75em;
 }
 
-.ao3ce-wrapper trix-editor :is(ul, ul li) { list-style: disc; }
-.ao3ce-wrapper trix-editor :is(ol, ol li) { list-style: decimal; }
-.ao3ce-wrapper trix-editor :is(ul, ol)    { padding-left: 1.5em; }
+.ao3ce-wrapper trix-editor ul,
+.ao3ce-wrapper trix-editor ul li { list-style: disc; }
+.ao3ce-wrapper trix-editor ol,
+.ao3ce-wrapper trix-editor ol li { list-style: decimal; }
+.ao3ce-wrapper trix-editor ul,
+.ao3ce-wrapper trix-editor ol   { padding-left: 1.5em; }
 
 /* ── Dark mode: Trix toolbar adjustments ───────────────────────────────── */
 
@@ -239,7 +247,7 @@ textarea.ao3ce-plain-textarea.ao3ce-dark {
 .ao3ce-dark trix-toolbar .trix-button { background: transparent; color: var(--ao3ce-text); border-bottom-color: var(--ao3ce-border); }
 .ao3ce-dark trix-toolbar .trix-button:not(:first-child)       { border-left-color: var(--ao3ce-border); }
 .ao3ce-dark trix-toolbar .trix-button.trix-active             { background: #3a3a3a; color: #fff; }
-.ao3ce-dark trix-toolbar .trix-button:disabled                { color: #555; }
+.ao3ce-dark trix-toolbar .trix-button:disabled                { color: #777; }
 .ao3ce-dark trix-toolbar .trix-button--icon::before           { filter: invert(1); }
 .ao3ce-dark trix-toolbar .trix-button--icon:disabled::before  { filter: invert(1) opacity(0.3); }
 
@@ -249,7 +257,7 @@ textarea.ao3ce-plain-textarea.ao3ce-dark {
   .ao3ce-wrapper trix-toolbar .trix-button { background: transparent; color: var(--ao3ce-text); border-bottom-color: var(--ao3ce-border); }
   .ao3ce-wrapper trix-toolbar .trix-button:not(:first-child)       { border-left-color: var(--ao3ce-border); }
   .ao3ce-wrapper trix-toolbar .trix-button.trix-active             { background: #3a3a3a; color: #fff; }
-  .ao3ce-wrapper trix-toolbar .trix-button:disabled                { color: #555; }
+  .ao3ce-wrapper trix-toolbar .trix-button:disabled                { color: #777; }
   .ao3ce-wrapper trix-toolbar .trix-button--icon::before           { filter: invert(1); }
   .ao3ce-wrapper trix-toolbar .trix-button--icon:disabled::before  { filter: invert(1) opacity(0.3); }
 }

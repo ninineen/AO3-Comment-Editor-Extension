@@ -10,8 +10,9 @@
   "content_scripts": [
     {
       "matches": ["https://archiveofourown.org/*"],
-      "js": ["vendor/purify.min.js", "vendor/quill.js", "content/content.js"],
-      "css": ["vendor/quill.snow.css", "content/content.css"],
+      "js": ["vendor/purify.min.js", "vendor/trix.js", "content/content.js"],
+      "css": ["vendor/trix.css", "content/content.css"],
+      "world": "MAIN",
       "run_at": "document_idle"
     }
   ],

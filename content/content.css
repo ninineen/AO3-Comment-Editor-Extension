@@ -35,31 +35,22 @@
   border-color: #700;
 }
 
-.ao3ce-editor {
+/* Trix editor overrides */
+trix-editor.ao3ce-editor {
   border: 1px solid #aaa;
-  border-radius: 0 3px 3px 3px;
+  border-top: none; /* toolbar sits above */
+  border-radius: 0 0 3px 3px;
   background: #fff;
-}
-
-/* Override Quill snow border so it merges with our wrapper */
-.ao3ce-editor .ql-container.ql-snow {
-  border: none;
+  min-height: 8em;
+  padding: 8px 10px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1em;
 }
 
-.ao3ce-editor .ql-toolbar.ql-snow {
-  border: none;
+trix-toolbar {
+  border: 1px solid #aaa;
+  border-radius: 3px 3px 0 0;
   border-bottom: 1px solid #ccc;
   padding: 4px 6px;
-}
-
-.ao3ce-editor .ql-editor {
-  min-height: 8em;
-  padding: 8px 10px;
-}
-
-.ao3ce-editor .ql-editor.ql-blank::before {
-  font-style: italic;
-  color: #999;
+  background: #f9f9f9;
 }

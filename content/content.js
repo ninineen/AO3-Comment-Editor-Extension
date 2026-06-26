@@ -15,32 +15,13 @@ const ALLOWED_ATTR = [
   "src","title","width",
 ];
 
-const TOOLBAR = [
-  [{ header: [1, 2, 3, 4, 5, 6, false] }],
-  ["bold", "italic", "underline", "strike"],
-  [{ script: "sub" }, { script: "super" }],
-  ["blockquote", "code-block"],
-  [{ list: "ordered" }, { list: "bullet" }],
-  ["link"],
-  ["clean"],
-];
-
 function sanitize(html) {
   return DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR, KEEP_CONTENT: true });
 }
 
-function stripTrailingBrs(html) {
-  return html.replace(/(<br\s*\/?>)+$/i, "");
-}
-
-function getEditorHtml(quill) {
-  const inner = quill.root.innerHTML;
-  if (inner === "<p><br></p>") return "";
-  return stripTrailingBrs(inner);
-}
-
 // Track injected textareas so we don't double-inject
 const injected = new WeakSet();
+let editorCounter = 0;
 
 function injectEditor(textarea) {
   if (injected.has(textarea)) return;
@@ -66,61 +47,51 @@ function injectEditor(textarea) {
 
   toggleBar.append(richBtn, plainBtn);
 
-  // quill container
-  const editorEl = document.createElement("div");
+  // Trix needs a hidden <input> as its backing store
+  const inputId = `ao3ce-input-${++editorCounter}`;
+  const hiddenInput = document.createElement("input");
+  hiddenInput.type = "hidden";
+  hiddenInput.id = inputId;
+
+  // trix-editor element
+  const editorEl = document.createElement("trix-editor");
+  editorEl.setAttribute("input", inputId);
   editorEl.className = "ao3ce-editor";
 
-  wrapper.append(toggleBar, editorEl);
+  wrapper.append(toggleBar, hiddenInput, editorEl);
   textarea.parentNode.insertBefore(wrapper, textarea);
 
   // hide original textarea
   textarea.style.display = "none";
 
-  // init Quill
-  const quill = new Quill(editorEl, {
-    theme: "snow",
-    placeholder: "Write your comment here…",
-    modules: { toolbar: TOOLBAR },
-  });
-
   // seed from textarea if it already has content (e.g. edit mode)
   if (textarea.value.trim()) {
-    const delta = quill.clipboard.convert({ html: textarea.value });
-    quill.setContents(delta, "silent");
+    // loadHTML must run after the editor is connected/ready
+    editorEl.addEventListener("trix-initialize", () => {
+      editorEl.editor.loadHTML(textarea.value);
+    }, { once: true });
   }
 
-  // sync Quill → textarea on every change
-  quill.on("text-change", (_delta, _old, source) => {
-    if (source === "silent") return;
-    textarea.value = sanitize(getEditorHtml(quill));
+  // sync Trix → textarea on every change
+  editorEl.addEventListener("trix-change", () => {
+    textarea.value = sanitize(hiddenInput.value);
   });
 
   // Rich / Plain toggle
   richBtn.addEventListener("click", () => {
     richBtn.classList.add("ao3ce-btn--active");
     plainBtn.classList.remove("ao3ce-btn--active");
-    // load textarea content back into quill
-    const delta = quill.clipboard.convert({ html: textarea.value });
-    quill.setContents(delta, "silent");
-    wrapper.style.display = "";
+    editorEl.editor.loadHTML(textarea.value);
+    wrapper.querySelectorAll("trix-toolbar, trix-editor").forEach(el => el.style.display = "");
     textarea.style.display = "none";
   });
 
   plainBtn.addEventListener("click", () => {
     plainBtn.classList.add("ao3ce-btn--active");
     richBtn.classList.remove("ao3ce-btn--active");
-    // make sure textarea has current sanitized html
-    textarea.value = sanitize(getEditorHtml(quill));
+    textarea.value = sanitize(hiddenInput.value);
+    wrapper.querySelectorAll("trix-toolbar, trix-editor").forEach(el => el.style.display = "none");
     textarea.style.display = "";
-    wrapper.querySelector(".ql-toolbar").style.display = "none";
-    editorEl.style.display = "none";
-  });
-
-  // when switching back to rich mode, re-show toolbar+editor
-  richBtn.addEventListener("click", () => {
-    const qlToolbar = wrapper.querySelector(".ql-toolbar");
-    if (qlToolbar) qlToolbar.style.display = "";
-    editorEl.style.display = "";
   });
 }
 

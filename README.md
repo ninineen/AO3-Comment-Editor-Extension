@@ -22,7 +22,7 @@ I make AO3 skins, stream on Twitch, and post fandom content across socials. Find
 
 ## What it does
 
-- Injects a Quill editor above every comment textarea on AO3
+- Injects a Trix editor above every comment textarea on AO3
 - **Rich mode** — format your comment with bold, italic, headers, lists, links, etc.
 - **Plain mode** — reveals the raw HTML textarea for hand-editing
 - Sanitizes output to AO3's allowed HTML tags and attributes before submitting
@@ -53,11 +53,11 @@ Matches AO3's own allowed tags: `<b>`, `<i>`, `<u>`, `<em>`, `<strong>`, `<a>`, 
 ao3-comment-editor-extension/
 ├── manifest.json        # MV3 manifest (Chrome + Firefox compatible)
 ├── content/
-│   ├── content.js       # Injection logic, Quill setup, sanitizer, toggle
-│   └── content.css      # Toggle button styles, Quill overrides
+│   ├── content.js       # Injection logic, Trix setup, sanitizer, toggle
+│   └── content.css      # Toggle button styles, Trix overrides
 ├── vendor/
-│   ├── quill.js         # Quill 2.0.3 (bundled locally, no CDN)
-│   ├── quill.snow.css   # Quill Snow theme
+│   ├── trix.js          # Trix 2.1.19 (bundled locally, no CDN)
+│   ├── trix.css         # Trix default styles
 │   └── purify.min.js    # DOMPurify 3.1.6
 └── icons/
     └── icon-48.png

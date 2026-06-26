@@ -60,6 +60,10 @@ ao3-comment-editor-extension/
 │   ├── trix.css         # Trix default styles
 │   └── purify.min.js    # DOMPurify 3.1.6
 └── icons/
-    └── icon-48.png
+    └── icon-48.png      # Art by @sunsetfoam (Abstraum / Traum)
 ```
+
+## Credits
+
+- Extension icon art by [@sunsetfoam](https://www.instagram.com/sunsetfoam) — reposted with credit as per their terms. Do not reuse for commercial or political purposes.
 

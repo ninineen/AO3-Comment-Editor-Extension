@@ -4,9 +4,15 @@
   "description": "Format AO3 comments with rich text editing",
   "private": true,
   "scripts": {
+    "start": "npm install && npm run vendor && npm run lint && npm run build",
+    "vendor": "cp node_modules/trix/dist/trix.umd.js vendor/trix.js && cp node_modules/trix/dist/trix.css vendor/trix.css && cp node_modules/dompurify/dist/purify.min.js vendor/purify.min.js",
     "lint": "web-ext lint",
     "build": "web-ext build --overwrite-dest",
     "run:firefox": "web-ext run --target firefox-desktop"
+  },
+  "dependencies": {
+    "dompurify": "3.1.6",
+    "trix": "2.1.19"
   },
   "devDependencies": {
     "web-ext": "^10.0.0"

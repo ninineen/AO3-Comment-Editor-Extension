@@ -52,13 +52,17 @@ Matches AO3's own allowed tags: `<b>`, `<i>`, `<u>`, `<em>`, `<strong>`, `<a>`, 
 ### Setup
 
 ```bash
-npm install
+npm start
 ```
+
+This installs dependencies, copies vendored libraries into `vendor/`, lints, and builds in one step.
 
 ### Scripts
 
 | Command | What it does |
 |---|---|
+| `npm start` | Install → vendor → lint → build (full setup in one step) |
+| `npm run vendor` | Copy pinned library files from `node_modules/` into `vendor/` |
 | `npm run lint` | Validate the extension with web-ext |
 | `npm run build` | Package into a submission-ready ZIP in `web-ext-artifacts/` |
 | `npm run run:firefox` | Load the extension in Firefox for live testing |
@@ -75,10 +79,12 @@ npm install
 
 ### Vendored libraries
 
-No bundler — libraries are checked in directly to `vendor/`:
+No bundler — libraries are committed to `vendor/` so extension reviewers can read them directly. Versions are pinned in `package.json` and the files are generated via `npm run vendor`.
 
-- [Trix 2.1.19](https://trix-editor.org/) — drop the new `trix.js` + `trix.css` into `vendor/` to upgrade
-- [DOMPurify 3.1.6](https://github.com/cure53/DOMPurify) — replace `vendor/purify.min.js` to upgrade
+- [Trix 2.1.19](https://trix-editor.org/) (`trix`, `trix.css`)
+- [DOMPurify 3.1.6](https://github.com/cure53/DOMPurify) (`purify.min.js`)
+
+To upgrade a library: update its version in `package.json`, run `npm install`, then `npm run vendor`, and commit the updated `vendor/` files.
 
 ### Testing manually
 
